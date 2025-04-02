@@ -1,0 +1,11 @@
+[package]
+name = "pheonyx_frb_client"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = { version = "=2.9.0" }
+pheonyx_engine = { path = "../engine" }
