@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pheonyx/src/rust/api/simple.dart';
+import 'package:pheonyx/src/rust/api/mdns.dart';
 import 'package:pheonyx/src/rust/frb_generated.dart';
 
 Future<void> main() async {
@@ -13,11 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text('flutter_rust_bridge quickstart')),
+        appBar: AppBar(title: const Text('Pheonyx')),
+
         body: Center(
-          child: Text(
-            'Action: Call Rust `greet("Tom")`\nResult: `${greet(name: "Tom")} Add: ${add(left: 30, right: 20)}`',
+          child: ElevatedButton(
+            onPressed: () async => await startMdnsServer(),
+            child: Text("Start Mdns"),
           ),
         ),
       ),

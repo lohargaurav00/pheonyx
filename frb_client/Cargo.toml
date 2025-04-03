@@ -9,3 +9,7 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 flutter_rust_bridge = { version = "=2.9.0" }
 pheonyx_engine = { path = "../engine" }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+futures-util = { workspace = true }

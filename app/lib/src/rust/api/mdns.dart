@@ -6,8 +6,5 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-String greet({required String name}) =>
-    RustLib.instance.api.crateApiSimpleGreet(name: name);
-
-int add({required int left, required int right}) =>
-    RustLib.instance.api.crateApiSimpleAdd(left: left, right: right);
+Future<void> startMdnsServer({int? dur}) =>
+    RustLib.instance.api.crateApiMdnsStartMdnsServer(dur: dur);
