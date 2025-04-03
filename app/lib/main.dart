@@ -19,7 +19,11 @@ class MyApp extends StatelessWidget {
 
         body: Center(
           child: ElevatedButton(
-            onPressed: () async => await startMdnsServer(),
+            onPressed: () async {
+              print('im here staring mdns ');
+              await startMdnsServer();
+              print('finished waiting');
+            },
             child: Text("Start Mdns"),
           ),
         ),
