@@ -50,7 +50,7 @@ pub fn initialize_tracing() -> Result<()> {
 
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
-struct MdnsServer {
+pub struct MdnsServer {
     running: Arc<Mutex<bool>>,
 }
 
