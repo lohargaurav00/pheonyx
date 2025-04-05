@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Connect extends StatelessWidget {
   const Connect({super.key});
@@ -7,7 +6,7 @@ class Connect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Center')),
+      appBar: AppBar(title: Text('Connect')),
       body: Text("Connect"),
     );
   }
