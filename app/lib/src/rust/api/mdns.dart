@@ -8,9 +8,3 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 Future<void> startMdnsServer({int? dur}) =>
     RustLib.instance.api.crateApiMdnsStartMdnsServer(dur: dur);
-
-MdnsServer createMdnsServer() =>
-    RustLib.instance.api.crateApiMdnsCreateMdnsServer();
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner< MdnsServer>>
-abstract class MdnsServer implements RustOpaqueInterface {}

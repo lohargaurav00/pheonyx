@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pheonyx/main.dart';
+import 'package:pheonyx/app.dart';
 import 'package:pheonyx/src/rust/frb_generated.dart';
 import 'package:integration_test/integration_test.dart';
 

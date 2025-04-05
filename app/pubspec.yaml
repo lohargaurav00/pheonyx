@@ -37,6 +37,8 @@ dependencies:
   pheonyx_frb_client:
     path: rust_builder
   flutter_rust_bridge: 2.9.0
+  flutter_bloc: ^9.1.0
+  bloc: ^9.0.0
 
 dev_dependencies:
   flutter_test:
