@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pheonyx/connect/cubits/mdns/mdns_cubit.dart';
+import 'package:pheonyx/widgets/icon_config_widget.dart';
 
 const double padding = 8;
 
@@ -47,10 +48,13 @@ class Connect extends StatelessWidget {
                       ? const Center(child: Text("No devices"))
                       : ListView.builder(
                         itemCount: state.services.length,
-                        itemBuilder:
-                            (_, index) => ListTile(
-                              title: Text(state.services[index].toString()),
-                            ),
+                        itemBuilder: (_, index) {
+                          final device = state.services[index];
+                          return ListTile(
+                            leading: IconConfig(icon: device.deviceType),
+                            title: Text(device.name.toUpperCase()),
+                          );
+                        },
                       ),
             ),
           ),

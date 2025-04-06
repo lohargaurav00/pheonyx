@@ -104,7 +104,7 @@ String _inferDeviceType(String name, String host, Map<String, String> txt) {
     return "Windows";
   }
   if (combined.contains("mac") || combined.contains("macbook")) return "macOS";
-  if (combined.contains("arch")) return "Arch Linux";
+  if (combined.contains("arch")) return "Arch";
   if (combined.contains("ubuntu")) return "Ubuntu";
   if (combined.contains("linux")) return "Linux";
 
