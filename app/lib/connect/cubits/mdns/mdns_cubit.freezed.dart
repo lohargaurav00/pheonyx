@@ -15,105 +15,38 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MdnsState {
 
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MdnsState);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'MdnsState()';
-}
-
-
-}
-
-/// @nodoc
-class $MdnsStateCopyWith<$Res>  {
-$MdnsStateCopyWith(MdnsState _, $Res Function(MdnsState) __);
-}
-
-
-/// @nodoc
-
-
-class Initial implements MdnsState {
-  const Initial();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initial);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'MdnsState.initial()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class Searching implements MdnsState {
-  const Searching(this.searching);
-  
-
- final  bool searching;
-
+ bool get isSearching; List<MdnsService> get services; String? get errorMessage; Status get status;
 /// Create a copy of MdnsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$SearchingCopyWith<Searching> get copyWith => _$SearchingCopyWithImpl<Searching>(this, _$identity);
+$MdnsStateCopyWith<MdnsState> get copyWith => _$MdnsStateCopyWithImpl<MdnsState>(this as MdnsState, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Searching&&(identical(other.searching, searching) || other.searching == searching));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MdnsState&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&const DeepCollectionEquality().equals(other.services, services)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,searching);
+int get hashCode => Object.hash(runtimeType,isSearching,const DeepCollectionEquality().hash(services),errorMessage,status);
 
 @override
 String toString() {
-  return 'MdnsState.searching(searching: $searching)';
+  return 'MdnsState(isSearching: $isSearching, services: $services, errorMessage: $errorMessage, status: $status)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $SearchingCopyWith<$Res> implements $MdnsStateCopyWith<$Res> {
-  factory $SearchingCopyWith(Searching value, $Res Function(Searching) _then) = _$SearchingCopyWithImpl;
+abstract mixin class $MdnsStateCopyWith<$Res>  {
+  factory $MdnsStateCopyWith(MdnsState value, $Res Function(MdnsState) _then) = _$MdnsStateCopyWithImpl;
 @useResult
 $Res call({
- bool searching
+ bool isSearching, List<MdnsService> services, String? errorMessage, Status status
 });
 
 
@@ -121,71 +54,77 @@ $Res call({
 
 }
 /// @nodoc
-class _$SearchingCopyWithImpl<$Res>
-    implements $SearchingCopyWith<$Res> {
-  _$SearchingCopyWithImpl(this._self, this._then);
+class _$MdnsStateCopyWithImpl<$Res>
+    implements $MdnsStateCopyWith<$Res> {
+  _$MdnsStateCopyWithImpl(this._self, this._then);
 
-  final Searching _self;
-  final $Res Function(Searching) _then;
+  final MdnsState _self;
+  final $Res Function(MdnsState) _then;
 
 /// Create a copy of MdnsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? searching = null,}) {
-  return _then(Searching(
-null == searching ? _self.searching : searching // ignore: cast_nullable_to_non_nullable
-as bool,
+@pragma('vm:prefer-inline') @override $Res call({Object? isSearching = null,Object? services = null,Object? errorMessage = freezed,Object? status = null,}) {
+  return _then(_self.copyWith(
+isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,services: null == services ? _self.services : services // ignore: cast_nullable_to_non_nullable
+as List<MdnsService>,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,
   ));
 }
 
-
 }
+
 
 /// @nodoc
 
 
-class Devices implements MdnsState {
-  const Devices(final  List<String> services): _services = services;
+class _MdnsState implements MdnsState {
+  const _MdnsState({this.isSearching = false, final  List<MdnsService> services = const [], this.errorMessage, this.status = Status.initial}): _services = services;
   
 
- final  List<String> _services;
- List<String> get services {
+@override@JsonKey() final  bool isSearching;
+ final  List<MdnsService> _services;
+@override@JsonKey() List<MdnsService> get services {
   if (_services is EqualUnmodifiableListView) return _services;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_services);
 }
 
+@override final  String? errorMessage;
+@override@JsonKey() final  Status status;
 
 /// Create a copy of MdnsState
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DevicesCopyWith<Devices> get copyWith => _$DevicesCopyWithImpl<Devices>(this, _$identity);
+_$MdnsStateCopyWith<_MdnsState> get copyWith => __$MdnsStateCopyWithImpl<_MdnsState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Devices&&const DeepCollectionEquality().equals(other._services, _services));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MdnsState&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&const DeepCollectionEquality().equals(other._services, _services)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_services));
+int get hashCode => Object.hash(runtimeType,isSearching,const DeepCollectionEquality().hash(_services),errorMessage,status);
 
 @override
 String toString() {
-  return 'MdnsState.devices(services: $services)';
+  return 'MdnsState(isSearching: $isSearching, services: $services, errorMessage: $errorMessage, status: $status)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DevicesCopyWith<$Res> implements $MdnsStateCopyWith<$Res> {
-  factory $DevicesCopyWith(Devices value, $Res Function(Devices) _then) = _$DevicesCopyWithImpl;
-@useResult
+abstract mixin class _$MdnsStateCopyWith<$Res> implements $MdnsStateCopyWith<$Res> {
+  factory _$MdnsStateCopyWith(_MdnsState value, $Res Function(_MdnsState) _then) = __$MdnsStateCopyWithImpl;
+@override @useResult
 $Res call({
- List<String> services
+ bool isSearching, List<MdnsService> services, String? errorMessage, Status status
 });
 
 
@@ -193,85 +132,22 @@ $Res call({
 
 }
 /// @nodoc
-class _$DevicesCopyWithImpl<$Res>
-    implements $DevicesCopyWith<$Res> {
-  _$DevicesCopyWithImpl(this._self, this._then);
+class __$MdnsStateCopyWithImpl<$Res>
+    implements _$MdnsStateCopyWith<$Res> {
+  __$MdnsStateCopyWithImpl(this._self, this._then);
 
-  final Devices _self;
-  final $Res Function(Devices) _then;
-
-/// Create a copy of MdnsState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? services = null,}) {
-  return _then(Devices(
-null == services ? _self._services : services // ignore: cast_nullable_to_non_nullable
-as List<String>,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class Error implements MdnsState {
-  const Error(this.message);
-  
-
- final  String message;
+  final _MdnsState _self;
+  final $Res Function(_MdnsState) _then;
 
 /// Create a copy of MdnsState
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,message);
-
-@override
-String toString() {
-  return 'MdnsState.error(message: $message)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $ErrorCopyWith<$Res> implements $MdnsStateCopyWith<$Res> {
-  factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
-@useResult
-$Res call({
- String message
-});
-
-
-
-
-}
-/// @nodoc
-class _$ErrorCopyWithImpl<$Res>
-    implements $ErrorCopyWith<$Res> {
-  _$ErrorCopyWithImpl(this._self, this._then);
-
-  final Error _self;
-  final $Res Function(Error) _then;
-
-/// Create a copy of MdnsState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(Error(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+@override @pragma('vm:prefer-inline') $Res call({Object? isSearching = null,Object? services = null,Object? errorMessage = freezed,Object? status = null,}) {
+  return _then(_MdnsState(
+isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,services: null == services ? _self._services : services // ignore: cast_nullable_to_non_nullable
+as List<MdnsService>,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,
   ));
 }
 

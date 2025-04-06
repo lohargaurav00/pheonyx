@@ -1,54 +1,116 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:multicast_dns/multicast_dns.dart';
+import 'package:pheonyx/connect/models/models.dart';
 
 part 'mdns_state.dart';
 part 'mdns_cubit.freezed.dart';
 
 class MdnsCubit extends Cubit<MdnsState> {
-  MdnsCubit() : super(const MdnsState.initial());
+  MdnsCubit() : super(const MdnsState());
 
   Future<void> searchMdnsDevices() async {
     const String name = '_pheonyx._tcp.local';
     final MDnsClient client = MDnsClient();
-    final devices = <String>[];
+    final devices = <MdnsService>[];
 
     try {
-      emit(const MdnsState.searching(true));
-      // Start the client with default options.
+      emit(
+        state.copyWith(
+          isSearching: true,
+          services: devices,
+          status: Status.loading,
+        ),
+      );
       await client.start();
 
-      // Get the PTR record for the service.
       await for (final PtrResourceRecord ptr in client
           .lookup<PtrResourceRecord>(
             ResourceRecordQuery.serverPointer(name),
-            timeout: Duration(seconds: 10),
+            timeout: const Duration(seconds: 10),
           )) {
+        final domainName = ptr.domainName;
+
         await for (final SrvResourceRecord srv in client
             .lookup<SrvResourceRecord>(
-              ResourceRecordQuery.service(ptr.domainName),
+              ResourceRecordQuery.service(domainName),
             )) {
-          final String bundleId = ptr.domainName;
-          final device = '${srv.target}:${srv.port} for "$bundleId"';
+          final String host = srv.target;
+          final int port = srv.port;
+          String ip = '';
+          Map<String, String> txtData = {};
 
-          // Directly update and emit discovered devices as they are found
-          if (!devices.contains(device)) {
-            devices.add(device);
-            emit(
-              MdnsState.devices(devices),
-            ); // Emit the discovered state directly
+          await for (final IPAddressResourceRecord ipRecord in client
+              .lookup<IPAddressResourceRecord>(
+                ResourceRecordQuery.addressIPv4(host),
+              )) {
+            if (ip.isEmpty) {
+              ip = ipRecord.address.address;
+            }
           }
 
-          print('Dart observatory instance found at, $device');
+          await for (final TxtResourceRecord txtRecord in client
+              .lookup<TxtResourceRecord>(
+                ResourceRecordQuery.text(domainName),
+              )) {
+            final rawTxt = txtRecord.text;
+
+            for (final line in rawTxt.split('\n')) {
+              final parts = line.split('=');
+              if (parts.length == 2) {
+                txtData[parts[0]] = parts[1];
+              }
+            }
+          }
+
+          final deviceName = _extractDeviceName(txtData, host, domainName);
+          final deviceType = _inferDeviceType(domainName, host, txtData);
+
+          final device = MdnsService(
+            name: deviceName,
+            ip: ip,
+            host: host,
+            port: port,
+            deviceType: deviceType,
+            txt: txtData,
+          );
+
+          if (!devices.contains(device)) {
+            devices.add(device);
+            emit(state.copyWith(services: devices, status: Status.success));
+          }
         }
       }
     } catch (e) {
-      emit(MdnsState.error("An error occurred during mDNS discovery: $e"));
+      emit(
+        state.copyWith(
+          errorMessage: "An error occurred during mDNS discovery: $e",
+          status: Status.error,
+        ),
+      );
     } finally {
-      emit(const MdnsState.searching(false));
       client.stop();
+      emit(state.copyWith(isSearching: false));
     }
-
-    print('Done.');
   }
+}
+
+String _inferDeviceType(String name, String host, Map<String, String> txt) {
+  final combined = '$name $host ${txt.values.join(" ")}'.toLowerCase();
+
+  if (combined.contains("android")) return "Android";
+  if (combined.contains("iphone") || combined.contains("ios")) return "iPhone";
+  if (combined.contains("windows") || combined.contains("desktop")) {
+    return "Windows";
+  }
+  if (combined.contains("mac") || combined.contains("macbook")) return "macOS";
+  if (combined.contains("arch")) return "Arch Linux";
+  if (combined.contains("ubuntu")) return "Ubuntu";
+  if (combined.contains("linux")) return "Linux";
+
+  return "Unknown";
+}
+
+String _extractDeviceName(Map<String, String> txt, String host, String domain) {
+  return txt['name'] ?? txt['device_name'] ?? host.split('.').first;
 }

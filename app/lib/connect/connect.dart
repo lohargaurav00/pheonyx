@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pheonyx/connect/cubits/mdns/mdns_cubit.dart';
 
+const double padding = 8;
+
 class Connect extends StatelessWidget {
   const Connect({super.key});
 
@@ -10,9 +12,14 @@ class Connect extends StatelessWidget {
     return BlocBuilder<MdnsCubit, MdnsState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Connect')),
-          // body: Text('$state'),
-          body: _buildBody(state),
+          appBar: AppBar(
+            title: const Text('Connect', style: TextStyle(fontSize: 20)),
+            toolbarHeight: 40,
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(padding),
+            child: _buildBody(state),
+          ),
           floatingActionButton: _buildFloatingActionButton(state, context),
         );
       },
@@ -20,34 +27,63 @@ class Connect extends StatelessWidget {
   }
 
   Widget _buildBody(MdnsState state) {
-    return Center(
-      child: switch (state) {
-        Initial() => const Text('Press search to find devices.'),
-        Searching(:final searching) =>
-          searching
-              ? const CircularProgressIndicator()
-              : const Text('Press search to find devices.'),
-        Devices(:final services) =>
-          services.isEmpty
-              ? const Text("No devices found.")
-              : ListView.builder(
-                itemCount: services.length,
-                itemBuilder:
-                    (_, index) => ListTile(title: Text(services[index])),
-              ),
-        Error(:final message) => Text('Error: $message'),
-      },
+    if (state.status == Status.error) {
+      return Center(
+        child: Text(state.errorMessage ?? '', textAlign: TextAlign.center),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _topSection(state),
+        Expanded(
+          // Use Expanded here instead of SizedBox with double.infinity
+          child: Card.outlined(
+            child: Padding(
+              padding: const EdgeInsets.all(padding),
+              child:
+                  state.services.isEmpty
+                      ? const Center(child: Text("No devices"))
+                      : ListView.builder(
+                        itemCount: state.services.length,
+                        itemBuilder:
+                            (_, index) => ListTile(
+                              title: Text(state.services[index].toString()),
+                            ),
+                      ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Card _topSection(MdnsState state) {
+    return Card.outlined(
+      child: Padding(
+        padding: const EdgeInsets.all(padding),
+        child: Center(
+          child:
+              state.isSearching
+                  ? SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: const CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text("Search for devices"),
+        ),
+      ),
     );
   }
 
   Widget _buildFloatingActionButton(MdnsState state, BuildContext context) {
     return FloatingActionButton.small(
-      onPressed: switch (state) {
-        Initial() => () => context.read<MdnsCubit>().searchMdnsDevices(),
-        Searching(searching: false) =>
-          () => context.read<MdnsCubit>().searchMdnsDevices(),
-        _ => null,
-      },
+      onPressed:
+          () async =>
+              state.isSearching
+                  ? Null
+                  : await context.read<MdnsCubit>().searchMdnsDevices(),
       child: const Icon(Icons.search),
     );
   }

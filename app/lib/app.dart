@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pheonyx/connect/connect.dart';
-import 'package:pheonyx/connect/cubits/mdns/mdns_cubit.dart';
+import 'package:pheonyx/connect/cubits/cubits.dart';
 import 'package:pheonyx/hub/hub.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       routes: {
         '/hub': (context) => const Hub(),
         '/connect':
