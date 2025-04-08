@@ -39,27 +39,85 @@ class Connect extends StatelessWidget {
       children: [
         _topSection(state),
         Expanded(
-          // Use Expanded here instead of SizedBox with double.infinity
           child: Card.outlined(
             child: Padding(
               padding: const EdgeInsets.all(padding),
               child:
                   state.services.isEmpty
                       ? const Center(child: Text("No devices"))
-                      : ListView.builder(
-                        itemCount: state.services.length,
-                        itemBuilder: (_, index) {
-                          final device = state.services[index];
-                          return ListTile(
-                            leading: IconConfig(icon: device.deviceType),
-                            title: Text(device.name.toUpperCase()),
-                          );
-                        },
-                      ),
+                      : _deviceList(state),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  ListView _deviceList(MdnsState state) {
+    return ListView.builder(
+      itemCount: state.services.length,
+      itemBuilder: (context, index) {
+        final colorTheme = Theme.of(context).colorScheme;
+        final device = state.services[index];
+        return InkWell(
+          borderRadius: BorderRadius.circular(8),
+          splashColor: colorTheme.onSecondary.withValues(alpha: 0.1),
+          highlightColor: colorTheme.onSecondary.withValues(alpha: 0.1),
+          onTap: () {
+            print('Tapped on ${device.name}');
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              border: Border.all(color: colorTheme.onSecondary),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .05),
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconConfig(icon: device.deviceType),
+                    const SizedBox(width: 10),
+                    Text(
+                      device.name.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text('Host: ${device.host}'),
+                Text('IP: ${device.ip}'),
+                Text('Port: ${device.port}'),
+                Text('Device Type: ${device.deviceType}'),
+                const SizedBox(height: 6),
+                if (device.txt.isNotEmpty) ...[
+                  const Text(
+                    'TXT Records:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                  ...device.txt.entries.map(
+                    (e) => Text(
+                      '${e.key}: ${e.value}',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
