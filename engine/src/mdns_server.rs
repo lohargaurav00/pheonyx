@@ -141,7 +141,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_register_mdns_server() {
-        let server = register_mdns_server(Some(10)).await;
+        let server = register_mdns_server(Some(1)).await;
 
         // Server will be dropped at end of test, which should clean up resources
         assert!(
