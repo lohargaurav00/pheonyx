@@ -8,9 +8,7 @@ use tokio::time::sleep;
 use tracing::{Level, error, info};
 use tracing_subscriber::FmtSubscriber;
 
-const SERVICE_NAME: &str = "_pheonyx._tcp";
-const SERVER_NAME: &str = "Pheonyx Server";
-const SERVER_PORT: u16 = 5435;
+use crate::utils::constants;
 
 pub fn initialize_tracing() -> Result<()> {
     // Set up tracing subscriber
@@ -77,13 +75,13 @@ impl MdnsServer {
 
             // Register the service once
             let _svc = responder.register(
-                SERVICE_NAME.to_string(),
-                SERVER_NAME.to_string(),
-                SERVER_PORT,
+                constants::SERVICE_NAME.to_string(),
+                constants::SERVER_NAME.to_string(),
+                constants::SERVER_PORT,
                 &["path=/"],
             );
 
-            info!("mDNS service registered as {}", SERVICE_NAME);
+            info!("mDNS service registered as {}", constants::SERVICE_NAME);
 
             // Keep the thread alive as long as `running` is true
             loop {
@@ -121,15 +119,15 @@ pub async fn register_mdns_server(dur: Option<u64>) -> Result<()> {
 
     // Register the service
     let _svc = responder.register(
-        SERVICE_NAME.to_string(),
-        SERVER_NAME.to_owned(),
-        SERVER_PORT,
+        constants::SERVICE_NAME.to_string(),
+        constants::SERVER_NAME.to_owned(),
+        constants::SERVER_PORT,
         &["path=/"],
     );
 
     sleep(Duration::from_secs(dur.unwrap_or_else(|| 5))).await;
 
-    info!("mDNS service registered as {}", SERVICE_NAME);
+    info!("mDNS service registered as {}", constants::SERVICE_NAME);
 
     Ok(())
 }

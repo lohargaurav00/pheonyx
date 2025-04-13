@@ -3,6 +3,8 @@ use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tokio::sync::Notify;
 
+use crate::utils::constants::SERVER_PORT;
+
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct UdpServer;
@@ -10,7 +12,7 @@ pub struct UdpServer;
 #[allow(dead_code)]
 impl UdpServer {
     pub async fn run_server(shutdown: Arc<Notify>) -> Result<()> {
-        let sock = UdpSocket::bind("0.0.0.0:8080").await?;
+        let sock = UdpSocket::bind(format!("0.0.0.0:{}", SERVER_PORT)).await?;
         let mut buf = [0; 1024];
 
         loop {
@@ -55,7 +57,7 @@ mod tests {
 
         // Create a UDP client socket
         let client = UdpSocket::bind("127.0.0.1:0").await?;
-        client.connect("127.0.0.1:8080").await?;
+        client.connect(format!("127.0.0.1:{}", SERVER_PORT)).await?;
 
         // Send message
         let msg = b"hello!";
