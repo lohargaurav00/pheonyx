@@ -3,16 +3,17 @@ use flutter_rust_bridge::frb;
 use tokio::net::UdpSocket;
 use tracing::{debug, info, instrument};
 
-#[derive(Debug)]
-#[frb(opaque)]
-pub struct UdpClient {
-    connected: bool,
-    socket: Option<UdpSocket>,
+#[frb(mirror(UdpClient))]
+pub struct _UdpClient {
+    pub connected: bool,
+    #[frb(non_final)]
+    pub socket: Option<UdpSocket>,
 }
 
-impl UdpClient {
+#[frb(mirror(UdpClient))]
+impl _UdpClient {
     pub fn new() -> Self {
-        UdpClient {
+        _UdpClient {
             connected: false,
             socket: None,
         }
