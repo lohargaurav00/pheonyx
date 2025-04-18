@@ -1,2 +1,2 @@
-pub mod mdns;
+pub mod bridge;
 pub mod udp_client;

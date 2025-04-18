@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pheonyx/src/rust/api/mdns.dart';
+import 'package:pheonyx/src/rust/api/bridge.dart';
 
 class Hub extends StatelessWidget {
   const Hub({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pheonyx/connect/cubits/mdns/mdns_cubit.dart';
-import 'package:pheonyx/src/rust/api/udp_client.dart';
+import 'package:pheonyx/src/rust/api/bridge.dart';
 import 'package:pheonyx/widgets/icon_config_widget.dart';
 
 const double padding = 8;

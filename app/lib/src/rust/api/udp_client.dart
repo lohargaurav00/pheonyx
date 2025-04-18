@@ -6,35 +6,6 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-UdpClient createUdpClient() =>
-    RustLib.instance.api.crateApiUdpClientCreateUdpClient();
-
-Future<void> udpClientConnectToServer({
-  required UdpClient client,
-  required String ip,
-  required int port,
-}) => RustLib.instance.api.crateApiUdpClientUdpClientConnectToServer(
-  client: client,
-  ip: ip,
-  port: port,
-);
-
-Future<void> udpClientSendText({
-  required UdpClient client,
-  required String message,
-}) => RustLib.instance.api.crateApiUdpClientUdpClientSendText(
-  client: client,
-  message: message,
-);
-
-Future<String> udpClientReceiveText({required UdpClient client}) =>
-    RustLib.instance.api.crateApiUdpClientUdpClientReceiveText(client: client);
-
-bool udpClientIsConnectedStatus({required UdpClient client}) => RustLib
-    .instance
-    .api
-    .crateApiUdpClientUdpClientIsConnectedStatus(client: client);
-
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < UdpSocket >>>
 abstract class ArcUdpSocket implements RustOpaqueInterface {}
 

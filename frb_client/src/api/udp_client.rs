@@ -69,31 +69,3 @@ impl UdpClient {
     }
 }
 
-#[frb]
-pub fn create_udp_client() -> UdpClient {
-    UdpClient::new()
-}
-
-#[frb]
-pub async fn udp_client_connect_to_server(
-    client: &mut UdpClient,
-    ip: String,
-    port: u16,
-) -> Result<()> {
-    client.connect(port, &ip).await
-}
-
-#[frb]
-pub async fn udp_client_send_text(client: &UdpClient, message: String) -> Result<()> {
-    client.send_message(&message).await
-}
-
-#[frb]
-pub async fn udp_client_receive_text(client: &UdpClient) -> Result<String> {
-    client.receive_message().await
-}
-
-#[frb]
-pub fn udp_client_is_connected_status(client: &UdpClient) -> bool {
-    client.connected
-}

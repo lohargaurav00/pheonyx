@@ -3,7 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
-import 'api/mdns.dart';
+import 'api/bridge.dart';
 import 'api/udp_client.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -63,7 +63,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => -528672881;
+  int get rustContentHash => 1966097431;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -109,23 +109,23 @@ abstract class RustLibApi extends BaseApi {
     required String message,
   });
 
-  UdpClient crateApiUdpClientCreateUdpClient();
+  UdpClient crateApiBridgeCreateUdpClient();
 
-  Future<void> crateApiMdnsStartMdnsServer({int? dur});
+  Future<void> crateApiBridgeStartMdnsServer({int? dur});
 
-  Future<void> crateApiUdpClientUdpClientConnectToServer({
+  Future<void> crateApiBridgeUdpClientConnectToServer({
     required UdpClient client,
     required String ip,
     required int port,
   });
 
-  bool crateApiUdpClientUdpClientIsConnectedStatus({required UdpClient client});
+  bool crateApiBridgeUdpClientIsConnectedStatus({required UdpClient client});
 
-  Future<String> crateApiUdpClientUdpClientReceiveText({
+  Future<String> crateApiBridgeUdpClientReceiveText({
     required UdpClient client,
   });
 
-  Future<void> crateApiUdpClientUdpClientSendText({
+  Future<void> crateApiBridgeUdpClientSendText({
     required UdpClient client,
     required String message,
   });
@@ -427,7 +427,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  UdpClient crateApiUdpClientCreateUdpClient() {
+  UdpClient crateApiBridgeCreateUdpClient() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -439,18 +439,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
               sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiUdpClientCreateUdpClientConstMeta,
+        constMeta: kCrateApiBridgeCreateUdpClientConstMeta,
         argValues: [],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiUdpClientCreateUdpClientConstMeta =>
+  TaskConstMeta get kCrateApiBridgeCreateUdpClientConstMeta =>
       const TaskConstMeta(debugName: "create_udp_client", argNames: []);
 
   @override
-  Future<void> crateApiMdnsStartMdnsServer({int? dur}) {
+  Future<void> crateApiBridgeStartMdnsServer({int? dur}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -467,18 +467,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiMdnsStartMdnsServerConstMeta,
+        constMeta: kCrateApiBridgeStartMdnsServerConstMeta,
         argValues: [dur],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiMdnsStartMdnsServerConstMeta =>
+  TaskConstMeta get kCrateApiBridgeStartMdnsServerConstMeta =>
       const TaskConstMeta(debugName: "start_mdns_server", argNames: ["dur"]);
 
   @override
-  Future<void> crateApiUdpClientUdpClientConnectToServer({
+  Future<void> crateApiBridgeUdpClientConnectToServer({
     required UdpClient client,
     required String ip,
     required int port,
@@ -504,23 +504,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiUdpClientUdpClientConnectToServerConstMeta,
+        constMeta: kCrateApiBridgeUdpClientConnectToServerConstMeta,
         argValues: [client, ip, port],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiUdpClientUdpClientConnectToServerConstMeta =>
+  TaskConstMeta get kCrateApiBridgeUdpClientConnectToServerConstMeta =>
       const TaskConstMeta(
         debugName: "udp_client_connect_to_server",
         argNames: ["client", "ip", "port"],
       );
 
   @override
-  bool crateApiUdpClientUdpClientIsConnectedStatus({
-    required UdpClient client,
-  }) {
+  bool crateApiBridgeUdpClientIsConnectedStatus({required UdpClient client}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -535,21 +533,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_bool,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiUdpClientUdpClientIsConnectedStatusConstMeta,
+        constMeta: kCrateApiBridgeUdpClientIsConnectedStatusConstMeta,
         argValues: [client],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiUdpClientUdpClientIsConnectedStatusConstMeta =>
+  TaskConstMeta get kCrateApiBridgeUdpClientIsConnectedStatusConstMeta =>
       const TaskConstMeta(
         debugName: "udp_client_is_connected_status",
         argNames: ["client"],
       );
 
   @override
-  Future<String> crateApiUdpClientUdpClientReceiveText({
+  Future<String> crateApiBridgeUdpClientReceiveText({
     required UdpClient client,
   }) {
     return handler.executeNormal(
@@ -571,21 +569,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_String,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiUdpClientUdpClientReceiveTextConstMeta,
+        constMeta: kCrateApiBridgeUdpClientReceiveTextConstMeta,
         argValues: [client],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiUdpClientUdpClientReceiveTextConstMeta =>
+  TaskConstMeta get kCrateApiBridgeUdpClientReceiveTextConstMeta =>
       const TaskConstMeta(
         debugName: "udp_client_receive_text",
         argNames: ["client"],
       );
 
   @override
-  Future<void> crateApiUdpClientUdpClientSendText({
+  Future<void> crateApiBridgeUdpClientSendText({
     required UdpClient client,
     required String message,
   }) {
@@ -609,14 +607,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: sse_decode_AnyhowException,
         ),
-        constMeta: kCrateApiUdpClientUdpClientSendTextConstMeta,
+        constMeta: kCrateApiBridgeUdpClientSendTextConstMeta,
         argValues: [client, message],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiUdpClientUdpClientSendTextConstMeta =>
+  TaskConstMeta get kCrateApiBridgeUdpClientSendTextConstMeta =>
       const TaskConstMeta(
         debugName: "udp_client_send_text",
         argNames: ["client", "message"],

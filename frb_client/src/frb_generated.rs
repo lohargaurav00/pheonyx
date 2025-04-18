@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.9.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -528672881;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1966097431;
 
 // Section: executor
 
@@ -448,7 +448,7 @@ fn wire__crate__api__udp_client__UdpClient_send_message_impl(
         },
     )
 }
-fn wire__crate__api__udp_client__create_udp_client_impl(
+fn wire__crate__api__bridge__create_udp_client_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
     data_len_: i32,
@@ -471,13 +471,13 @@ fn wire__crate__api__udp_client__create_udp_client_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             deserializer.end();
             transform_result_sse::<_, ()>((move || {
-                let output_ok = Result::<_, ()>::Ok(crate::api::udp_client::create_udp_client())?;
+                let output_ok = Result::<_, ()>::Ok(crate::api::bridge::create_udp_client())?;
                 Ok(output_ok)
             })())
         },
     )
 }
-fn wire__crate__api__mdns__start_mdns_server_impl(
+fn wire__crate__api__bridge__start_mdns_server_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -504,7 +504,7 @@ fn wire__crate__api__mdns__start_mdns_server_impl(
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
                     (move || async move {
-                        let output_ok = crate::api::mdns::start_mdns_server(api_dur).await?;
+                        let output_ok = crate::api::bridge::start_mdns_server(api_dur).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -513,7 +513,7 @@ fn wire__crate__api__mdns__start_mdns_server_impl(
         },
     )
 }
-fn wire__crate__api__udp_client__udp_client_connect_to_server_impl(
+fn wire__crate__api__bridge__udp_client_connect_to_server_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -563,7 +563,7 @@ fn wire__crate__api__udp_client__udp_client_connect_to_server_impl(
                             }
                         }
                         let mut api_client_guard = api_client_guard.unwrap();
-                        let output_ok = crate::api::udp_client::udp_client_connect_to_server(
+                        let output_ok = crate::api::bridge::udp_client_connect_to_server(
                             &mut *api_client_guard,
                             api_ip,
                             api_port,
@@ -577,7 +577,7 @@ fn wire__crate__api__udp_client__udp_client_connect_to_server_impl(
         },
     )
 }
-fn wire__crate__api__udp_client__udp_client_is_connected_status_impl(
+fn wire__crate__api__bridge__udp_client_is_connected_status_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
     data_len_: i32,
@@ -620,14 +620,14 @@ fn wire__crate__api__udp_client__udp_client_is_connected_status_impl(
                 }
                 let api_client_guard = api_client_guard.unwrap();
                 let output_ok = Result::<_, ()>::Ok(
-                    crate::api::udp_client::udp_client_is_connected_status(&*api_client_guard),
+                    crate::api::bridge::udp_client_is_connected_status(&*api_client_guard),
                 )?;
                 Ok(output_ok)
             })())
         },
     )
 }
-fn wire__crate__api__udp_client__udp_client_receive_text_impl(
+fn wire__crate__api__bridge__udp_client_receive_text_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -676,8 +676,7 @@ fn wire__crate__api__udp_client__udp_client_receive_text_impl(
                         }
                         let api_client_guard = api_client_guard.unwrap();
                         let output_ok =
-                            crate::api::udp_client::udp_client_receive_text(&*api_client_guard)
-                                .await?;
+                            crate::api::bridge::udp_client_receive_text(&*api_client_guard).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -686,7 +685,7 @@ fn wire__crate__api__udp_client__udp_client_receive_text_impl(
         },
     )
 }
-fn wire__crate__api__udp_client__udp_client_send_text_impl(
+fn wire__crate__api__bridge__udp_client_send_text_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -735,7 +734,7 @@ fn wire__crate__api__udp_client__udp_client_send_text_impl(
                             }
                         }
                         let api_client_guard = api_client_guard.unwrap();
-                        let output_ok = crate::api::udp_client::udp_client_send_text(
+                        let output_ok = crate::api::bridge::udp_client_send_text(
                             &*api_client_guard,
                             api_message,
                         )
@@ -921,25 +920,22 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        10 => wire__crate__api__mdns__start_mdns_server_impl(port, ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__udp_client__udp_client_connect_to_server_impl(
+        10 => wire__crate__api__bridge__start_mdns_server_impl(port, ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__bridge__udp_client_connect_to_server_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        13 => wire__crate__api__udp_client__udp_client_receive_text_impl(
+        13 => wire__crate__api__bridge__udp_client_receive_text_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        14 => wire__crate__api__udp_client__udp_client_send_text_impl(
-            port,
-            ptr,
-            rust_vec_len,
-            data_len,
-        ),
+        14 => {
+            wire__crate__api__bridge__udp_client_send_text_impl(port, ptr, rust_vec_len, data_len)
+        }
         _ => unreachable!(),
     }
 }
@@ -973,8 +969,8 @@ fn pde_ffi_dispatcher_sync_impl(
             data_len,
         ),
         6 => wire__crate__api__udp_client__UdpClient_new_impl(ptr, rust_vec_len, data_len),
-        9 => wire__crate__api__udp_client__create_udp_client_impl(ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__udp_client__udp_client_is_connected_status_impl(
+        9 => wire__crate__api__bridge__create_udp_client_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__api__bridge__udp_client_is_connected_status_impl(
             ptr,
             rust_vec_len,
             data_len,
