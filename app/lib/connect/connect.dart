@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pheonyx/connect/cubits/mdns/mdns_cubit.dart';
+import 'package:pheonyx/src/rust/api/udp_client.dart';
 import 'package:pheonyx/widgets/icon_config_widget.dart';
 
 const double padding = 8;
@@ -63,8 +64,21 @@ class Connect extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           splashColor: colorTheme.onSecondary.withValues(alpha: 0.1),
           highlightColor: colorTheme.onSecondary.withValues(alpha: 0.1),
-          onTap: () {
+          onTap: () async {
             print('Tapped on ${device.name}');
+            final client = createUdpClient();
+            await udpClientConnectToServer(
+              client: client,
+              ip: device.ip,
+              port: device.port,
+            );
+            await udpClientSendText(
+              client: client,
+              message: "hello from flutter",
+            );
+
+            final message = await udpClientReceiveText(client: client);
+            print('message: $message');
           },
           child: Container(
             padding: const EdgeInsets.all(12),
