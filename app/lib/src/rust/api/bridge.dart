@@ -92,3 +92,55 @@ bool udpClientIsConnectedStatus({required UdpClient client}) => RustLib
     .instance
     .api
     .crateApiBridgeUdpClientIsConnectedStatus(client: client);
+
+/// Creates a new instance of the `MdnsServer`.
+///
+/// This can be used to register and discover devices on the local network
+/// via mDNS (Multicast DNS).
+///
+/// # Returns
+///
+/// * `MdnsServer` - A new, unstarted mDNS server instance.
+MdnsServer createMdnsServerDaimon() =>
+    RustLib.instance.api.crateApiBridgeCreateMdnsServerDaimon();
+
+/// Starts the given mDNS server instance.
+///
+/// This begins advertising the service on the local network for discovery.
+/// Should be called after creating the server.
+///
+/// # Arguments
+///
+/// * `server` - A mutable reference to an `MdnsServer`.
+///
+/// # Returns
+///
+/// * `Result<()>` - Returns `Ok(())` if the server starts successfully, otherwise an error.
+void startMdnsDaimon({required MdnsServer server}) =>
+    RustLib.instance.api.crateApiBridgeStartMdnsDaimon(server: server);
+
+/// Stops the given mDNS server instance.
+///
+/// This halts any ongoing mDNS advertisement and removes the service
+/// from the local network.
+///
+/// # Arguments
+///
+/// * `server` - A mutable reference to an `MdnsServer`.
+void stopMdnsDaimon({required MdnsServer server}) =>
+    RustLib.instance.api.crateApiBridgeStopMdnsDaimon(server: server);
+
+/// Checks whether the given mDNS server instance is currently running.
+///
+/// # Arguments
+///
+/// * `server` - A reference to an `MdnsServer`.
+///
+/// # Returns
+///
+/// * `bool` - `true` if the server is running, `false` otherwise.
+bool mdnsDaimonRunning({required MdnsServer server}) =>
+    RustLib.instance.api.crateApiBridgeMdnsDaimonRunning(server: server);
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner< MdnsServer>>
+abstract class MdnsServer implements RustOpaqueInterface {}

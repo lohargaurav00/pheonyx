@@ -91,3 +91,60 @@ pub async fn udp_client_receive_text(client: &UdpClient) -> Result<String> {
 pub fn udp_client_is_connected_status(client: &UdpClient) -> bool {
     client.connected
 }
+
+/// Creates a new instance of the `MdnsServer`.
+///
+/// This can be used to register and discover devices on the local network
+/// via mDNS (Multicast DNS).
+///
+/// # Returns
+///
+/// * `MdnsServer` - A new, unstarted mDNS server instance.
+#[frb]
+pub fn create_mdns_server_daimon() -> mdns_server::MdnsServer {
+    mdns_server::MdnsServer::new()
+}
+
+/// Starts the given mDNS server instance.
+///
+/// This begins advertising the service on the local network for discovery.
+/// Should be called after creating the server.
+///
+/// # Arguments
+///
+/// * `server` - A mutable reference to an `MdnsServer`.
+///
+/// # Returns
+///
+/// * `Result<()>` - Returns `Ok(())` if the server starts successfully, otherwise an error.
+#[frb]
+pub fn start_mdns_daimon(server: &mut mdns_server::MdnsServer) -> Result<()> {
+    server.start()
+}
+
+/// Stops the given mDNS server instance.
+///
+/// This halts any ongoing mDNS advertisement and removes the service
+/// from the local network.
+///
+/// # Arguments
+///
+/// * `server` - A mutable reference to an `MdnsServer`.
+#[frb]
+pub fn stop_mdns_daimon(server: &mut mdns_server::MdnsServer) {
+    server.stop()
+}
+
+/// Checks whether the given mDNS server instance is currently running.
+///
+/// # Arguments
+///
+/// * `server` - A reference to an `MdnsServer`.
+///
+/// # Returns
+///
+/// * `bool` - `true` if the server is running, `false` otherwise.
+#[frb]
+pub fn mdns_daimon_running(server: &mdns_server::MdnsServer) -> bool {
+    *server.running.lock().unwrap()
+}

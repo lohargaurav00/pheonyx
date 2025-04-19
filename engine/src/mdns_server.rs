@@ -49,7 +49,7 @@ pub fn initialize_tracing() -> Result<()> {
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct MdnsServer {
-    running: Arc<Mutex<bool>>,
+   pub running: Arc<Mutex<bool>>,
 }
 
 #[allow(dead_code)]
@@ -60,7 +60,7 @@ impl MdnsServer {
         }
     }
 
-    pub fn register_mdns_server(&self) -> Result<()> {
+    fn register_mdns_server(&self) -> Result<()> {
         let running = Arc::clone(&self.running);
 
         thread::spawn(move || {
