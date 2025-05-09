@@ -1,6 +1,10 @@
-use anyhow::Result;
+use anyhow::{Ok, Result};
 use flutter_rust_bridge::frb;
-use pheonyx_engine::mdns_server;
+use pheonyx_engine::{mdns_server, udp_server::UdpServer};
+use serde::Serialize;
+use std::net::SocketAddr;
+
+use crate::frb_generated::StreamSink;
 
 use super::udp_client::UdpClient;
 
@@ -147,4 +151,66 @@ pub fn stop_mdns_daimon(server: &mut mdns_server::MdnsServer) {
 #[frb]
 pub fn mdns_daimon_running(server: &mdns_server::MdnsServer) -> bool {
     *server.running.lock().unwrap()
+}
+
+/// Starts a UDP server on the given port.
+///
+/// # Arguments
+/// * `port` - The port to bind the UDP socket to.
+///
+/// # Returns
+/// Returns a `UdpServer` instance wrapped in `Result`. This server can be used to send and receive messages.
+pub async fn start_udp_server(port: u16) -> Result<UdpServer> {
+    let server = UdpServer::new(port).await?;
+    server.run()?;
+    Ok(server)
+}
+
+/// Sends a message to all clients currently connected to the UDP server.
+///
+/// # Arguments
+/// * `server` - The `UdpServer` instance used to send the message.
+/// * `msg` - A `String` containing the message to be sent.
+///
+/// # Returns
+/// Returns `Ok(())` if the message was sent successfully.
+pub async fn udp_send_message(server: UdpServer, msg: String) -> Result<()> {
+    server.send_message(&msg).await
+}
+
+/// Represents a received UDP message packet.
+///
+/// This struct will be serialized and sent to Flutter through a stream.
+#[derive(Serialize)]
+pub struct UdpPacket {
+    /// Raw data received from the sender.
+    pub data: Vec<u8>,
+    /// The address of the sender.
+    pub addr: SocketAddr,
+}
+
+/// Streams incoming UDP packets to the Flutter side.
+///
+/// This function runs a background task that listens for UDP messages and
+/// sends each one to the provided `StreamSink`.
+///
+/// # Arguments
+/// * `server` - The `UdpServer` instance to listen on.
+/// * `sink` - The stream sink that forwards packets to Flutter.
+///
+/// # Returns
+/// Returns `Ok(())` if the stream is set up successfully.
+#[frb]
+pub fn udp_receive_stream(server: UdpServer, sink: StreamSink<UdpPacket>) -> Result<()> {
+    let mut rx = server.rx;
+    tokio::spawn(async move {
+        while let Some((data, addr)) = rx.recv().await {
+            let packet = UdpPacket { data, addr };
+            if sink.add(packet).is_err() {
+                break;
+            }
+        }
+    });
+
+    Ok(())
 }

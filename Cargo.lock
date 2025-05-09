@@ -728,6 +728,7 @@ dependencies = [
  "flutter_rust_bridge",
  "futures-util",
  "pheonyx_engine",
+ "serde",
  "tokio",
  "tracing",
  "tracing-subscriber",
