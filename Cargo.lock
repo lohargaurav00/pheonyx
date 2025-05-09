@@ -298,6 +298,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "example"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "pheonyx_engine",
+ "tokio",
+]
+
+[[package]]
 name = "flutter_rust_bridge"
 version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

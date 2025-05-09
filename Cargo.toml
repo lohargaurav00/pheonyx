@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = ["engine", "frb_client"]
+members = ["engine", "frb_client", "example"]
 
 [workspace.dependencies]
 anyhow = "1.0.97"
