@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       routes: {
         '/hub':
-            (context) => BlocProvider(
-              create: (context) => MdnsServerCubit(),
+            (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider<MdnsServerCubit>(create: (_) => MdnsServerCubit()),
+                BlocProvider<UdpServerCubit>(create: (_) => UdpServerCubit()),
+              ],
               child: const Hub(),
             ),
         '/connect':

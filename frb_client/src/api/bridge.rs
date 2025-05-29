@@ -1,12 +1,10 @@
 use anyhow::{Ok, Result};
 use flutter_rust_bridge::frb;
-use pheonyx_engine::{mdns_server, udp_server::UdpServer};
+use pheonyx_engine::{mdns_server, udp_client::UdpClient, udp_server::UdpServer};
 use serde::Serialize;
 use std::net::SocketAddr;
 
 use crate::frb_generated::StreamSink;
-
-use super::udp_client::UdpClient;
 
 /// Starts an mDNS server for device discovery on the local network.
 ///
@@ -202,14 +200,17 @@ pub struct UdpPacket {
 /// Returns `Ok(())` if the stream is set up successfully.
 #[frb]
 pub fn udp_receive_stream(server: UdpServer, sink: StreamSink<UdpPacket>) -> Result<()> {
-    let mut rx = server.rx;
-    tokio::spawn(async move {
-        while let Some((data, addr)) = rx.recv().await {
-            let packet = UdpPacket { data, addr };
-            if sink.add(packet).is_err() {
-                break;
+    std::thread::spawn(move || {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        rt.block_on(async {
+            let mut rx = server.rx;
+            while let Some((data, addr)) = rx.recv().await {
+                let packet = UdpPacket { data, addr };
+                if sink.add(packet).is_err() {
+                    break;
+                }
             }
-        }
+        });
     });
 
     Ok(())

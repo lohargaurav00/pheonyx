@@ -1,10 +1,8 @@
 use anyhow::{Context, Result};
-use flutter_rust_bridge::frb;
 use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tracing::{debug, info};
 
-#[frb(opaque)]
 pub struct UdpClient {
     pub connected: bool,
     pub socket: Option<Arc<UdpSocket>>,
@@ -68,4 +66,3 @@ impl UdpClient {
         }
     }
 }
-

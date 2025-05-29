@@ -5,7 +5,8 @@ use tokio::sync::Mutex;
 use tokio::{net::UdpSocket, sync::mpsc};
 use tracing::{debug, error, info, instrument};
 
-#[allow(dead_code)]
+use crate::mdns_server::initialize_tracing;
+
 #[derive(Debug)]
 pub struct UdpServer {
     pub socket: Arc<UdpSocket>,
@@ -18,6 +19,7 @@ pub struct UdpServer {
 impl UdpServer {
     #[instrument]
     pub async fn new(port: u16) -> Result<Self> {
+        initialize_tracing()?;
         info!(port, "Starting UDP server");
 
         let addr = format!("0.0.0.0:{}", port)
@@ -72,7 +74,6 @@ impl UdpServer {
                 }
             }
         });
-
         Ok(())
     }
 

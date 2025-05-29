@@ -7,6 +7,8 @@ import 'package:pheonyx/src/rust/api/bridge.dart';
 part 'upd_server_state.dart';
 part 'udp_server_cubit.freezed.dart';
 
+const udpServerPort = 6000;
+
 class UdpServerCubit extends Cubit<UdpServerState> {
   UdpServer? _server;
   StreamSubscription? _subscription;
@@ -17,7 +19,7 @@ class UdpServerCubit extends Cubit<UdpServerState> {
 
   Future<void> _init() async {
     try {
-      _server = await startUdpServer(port: 6000);
+      _server = await startUdpServer(port: udpServerPort);
       emit(state.copyWith(loading: false));
       _startListening();
     } catch (e) {

@@ -5,7 +5,6 @@
 
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'udp_client.dart';
 
 /// Starts an mDNS server for device discovery on the local network.
 ///
@@ -182,6 +181,9 @@ abstract class MdnsServer implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SocketAddr>>
 abstract class SocketAddr implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpClient>>
+abstract class UdpClient implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpPacket>>
 abstract class UdpPacket implements RustOpaqueInterface {

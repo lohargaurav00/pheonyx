@@ -4,7 +4,6 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/bridge.dart';
-import 'api/udp_client.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -63,7 +62,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => -244186342;
+  int get rustContentHash => 387937638;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -74,41 +73,6 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  bool crateApiUdpClientUdpClientAutoAccessorGetConnected({
-    required UdpClient that,
-  });
-
-  ArcUdpSocket? crateApiUdpClientUdpClientAutoAccessorGetSocket({
-    required UdpClient that,
-  });
-
-  void crateApiUdpClientUdpClientAutoAccessorSetConnected({
-    required UdpClient that,
-    required bool connected,
-  });
-
-  void crateApiUdpClientUdpClientAutoAccessorSetSocket({
-    required UdpClient that,
-    ArcUdpSocket? socket,
-  });
-
-  Future<void> crateApiUdpClientUdpClientConnect({
-    required UdpClient that,
-    required int port,
-    required String ip,
-  });
-
-  UdpClient crateApiUdpClientUdpClientNew();
-
-  Future<String> crateApiUdpClientUdpClientReceiveMessage({
-    required UdpClient that,
-  });
-
-  Future<void> crateApiUdpClientUdpClientSendMessage({
-    required UdpClient that,
-    required String message,
-  });
-
   SocketAddr crateApiBridgeUdpPacketAutoAccessorGetAddr({
     required UdpPacket that,
   });
@@ -166,14 +130,6 @@ abstract class RustLibApi extends BaseApi {
   });
 
   RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ArcUdpSocket;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ArcUdpSocket;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ArcUdpSocketPtr;
-
-  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_MdnsServer;
 
   RustArcDecrementStrongCountFnType
@@ -223,277 +179,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  bool crateApiUdpClientUdpClientAutoAccessorGetConnected({
-    required UdpClient that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientAutoAccessorGetConnectedConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kCrateApiUdpClientUdpClientAutoAccessorGetConnectedConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_auto_accessor_get_connected",
-        argNames: ["that"],
-      );
-
-  @override
-  ArcUdpSocket? crateApiUdpClientUdpClientAutoAccessorGetSocket({
-    required UdpClient that,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientAutoAccessorGetSocketConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientAutoAccessorGetSocketConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_auto_accessor_get_socket",
-        argNames: ["that"],
-      );
-
-  @override
-  void crateApiUdpClientUdpClientAutoAccessorSetConnected({
-    required UdpClient that,
-    required bool connected,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          sse_encode_bool(connected, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientAutoAccessorSetConnectedConstMeta,
-        argValues: [that, connected],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta
-  get kCrateApiUdpClientUdpClientAutoAccessorSetConnectedConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_auto_accessor_set_connected",
-        argNames: ["that", "connected"],
-      );
-
-  @override
-  void crateApiUdpClientUdpClientAutoAccessorSetSocket({
-    required UdpClient that,
-    ArcUdpSocket? socket,
-  }) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-            socket,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientAutoAccessorSetSocketConstMeta,
-        argValues: [that, socket],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientAutoAccessorSetSocketConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_auto_accessor_set_socket",
-        argNames: ["that", "socket"],
-      );
-
-  @override
-  Future<void> crateApiUdpClientUdpClientConnect({
-    required UdpClient that,
-    required int port,
-    required String ip,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          sse_encode_u_16(port, serializer);
-          sse_encode_String(ip, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 5,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientConnectConstMeta,
-        argValues: [that, port, ip],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientConnectConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_connect",
-        argNames: ["that", "port", "ip"],
-      );
-
-  @override
-  UdpClient crateApiUdpClientUdpClientNew() {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientNewConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientNewConstMeta =>
-      const TaskConstMeta(debugName: "UdpClient_new", argNames: []);
-
-  @override
-  Future<String> crateApiUdpClientUdpClientReceiveMessage({
-    required UdpClient that,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 7,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientReceiveMessageConstMeta,
-        argValues: [that],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientReceiveMessageConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_receive_message",
-        argNames: ["that"],
-      );
-
-  @override
-  Future<void> crateApiUdpClientUdpClientSendMessage({
-    required UdpClient that,
-    required String message,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            that,
-            serializer,
-          );
-          sse_encode_String(message, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 8,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiUdpClientUdpClientSendMessageConstMeta,
-        argValues: [that, message],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiUdpClientUdpClientSendMessageConstMeta =>
-      const TaskConstMeta(
-        debugName: "UdpClient_send_message",
-        argNames: ["that", "message"],
-      );
-
-  @override
   SocketAddr crateApiBridgeUdpPacketAutoAccessorGetAddr({
     required UdpPacket that,
   }) {
@@ -505,7 +190,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -537,7 +222,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_prim_u_8_strict,
@@ -573,7 +258,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             addr,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -606,7 +291,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             serializer,
           );
           sse_encode_list_prim_u_8_strict(data, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -631,7 +316,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -654,7 +339,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -681,7 +366,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -710,7 +395,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -736,7 +421,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 17,
+            funcId: 9,
             port: port_,
           );
         },
@@ -764,7 +449,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 18,
+            funcId: 10,
             port: port_,
           );
         },
@@ -793,7 +478,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 19)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -828,7 +513,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 20,
+            funcId: 12,
             port: port_,
           );
         },
@@ -859,7 +544,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             client,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -893,7 +578,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 22,
+            funcId: 14,
             port: port_,
           );
         },
@@ -931,7 +616,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 23,
+            funcId: 15,
             port: port_,
           );
         },
@@ -969,7 +654,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             sink,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 24)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1006,7 +691,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 25,
+            funcId: 17,
             port: port_,
           );
         },
@@ -1026,14 +711,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         debugName: "udp_send_message",
         argNames: ["server", "msg"],
       );
-
-  RustArcIncrementStrongCountFnType
-  get rust_arc_increment_strong_count_ArcUdpSocket =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket;
-
-  RustArcDecrementStrongCountFnType
-  get rust_arc_decrement_strong_count_ArcUdpSocket =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_MdnsServer =>
@@ -1079,15 +756,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return AnyhowException(raw as String);
-  }
-
-  @protected
-  ArcUdpSocket
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ArcUdpSocketImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -1198,15 +866,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ArcUdpSocket
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ArcUdpSocketImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
   MdnsServer
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMdnsServer(
     dynamic raw,
@@ -1273,17 +932,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ArcUdpSocket
-  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-      raw,
-    );
-  }
-
-  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
@@ -1293,19 +941,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int? dco_decode_opt_CastedPrimitive_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_CastedPrimitive_u_64(raw);
-  }
-
-  @protected
-  ArcUdpSocket?
-  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null
-        ? null
-        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-          raw,
-        );
   }
 
   @protected
@@ -1343,18 +978,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
     return AnyhowException(inner);
-  }
-
-  @protected
-  ArcUdpSocket
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ArcUdpSocketImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
   }
 
   @protected
@@ -1497,18 +1120,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ArcUdpSocket
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ArcUdpSocketImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
   MdnsServer
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMdnsServer(
     SseDeserializer deserializer,
@@ -1591,17 +1202,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ArcUdpSocket
-  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-      deserializer,
-    ));
-  }
-
-  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -1614,22 +1214,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_CastedPrimitive_u_64(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  ArcUdpSocket?
-  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-        deserializer,
-      ));
     } else {
       return null;
     }
@@ -1677,19 +1261,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.message, serializer);
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    ArcUdpSocket self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as ArcUdpSocketImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
   }
 
   @protected
@@ -1843,19 +1414,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    ArcUdpSocket self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as ArcUdpSocketImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
-  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMdnsServer(
     MdnsServer self,
     SseSerializer serializer,
@@ -1951,19 +1509,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void
-  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    ArcUdpSocket self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-      self,
-      serializer,
-    );
-  }
-
-  @protected
   void sse_encode_list_prim_u_8_strict(
     Uint8List self,
     SseSerializer serializer,
@@ -1983,23 +1528,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_CastedPrimitive_u_64(self, serializer);
-    }
-  }
-
-  @protected
-  void
-  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-    ArcUdpSocket? self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcUdpSocket(
-        self,
-        serializer,
-      );
     }
   }
 
@@ -2037,26 +1565,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
   }
-}
-
-@sealed
-class ArcUdpSocketImpl extends RustOpaque implements ArcUdpSocket {
-  // Not to be used by end users
-  ArcUdpSocketImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  ArcUdpSocketImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_ArcUdpSocket,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_ArcUdpSocket,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_ArcUdpSocketPtr,
-  );
 }
 
 @sealed
@@ -2117,35 +1625,6 @@ class UdpClientImpl extends RustOpaque implements UdpClient {
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_UdpClientPtr,
   );
-
-  bool get connected => RustLib.instance.api
-      .crateApiUdpClientUdpClientAutoAccessorGetConnected(that: this);
-
-  ArcUdpSocket? get socket => RustLib.instance.api
-      .crateApiUdpClientUdpClientAutoAccessorGetSocket(that: this);
-
-  set connected(bool connected) =>
-      RustLib.instance.api.crateApiUdpClientUdpClientAutoAccessorSetConnected(
-        that: this,
-        connected: connected,
-      );
-
-  set socket(ArcUdpSocket? socket) =>
-      RustLib.instance.api.crateApiUdpClientUdpClientAutoAccessorSetSocket(
-        that: this,
-        socket: socket,
-      );
-
-  Future<void> connect({required int port, required String ip}) => RustLib
-      .instance
-      .api
-      .crateApiUdpClientUdpClientConnect(that: this, port: port, ip: ip);
-
-  Future<String> receiveMessage() =>
-      RustLib.instance.api.crateApiUdpClientUdpClientReceiveMessage(that: this);
-
-  Future<void> sendMessage({required String message}) => RustLib.instance.api
-      .crateApiUdpClientUdpClientSendMessage(that: this, message: message);
 }
 
 @sealed
