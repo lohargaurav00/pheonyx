@@ -141,41 +141,6 @@ void stopMdnsDaimon({required MdnsServer server}) =>
 bool mdnsDaimonRunning({required MdnsServer server}) =>
     RustLib.instance.api.crateApiBridgeMdnsDaimonRunning(server: server);
 
-/// Starts a UDP server on the given port.
-///
-/// # Arguments
-/// * `port` - The port to bind the UDP socket to.
-///
-/// # Returns
-/// Returns a `UdpServer` instance wrapped in `Result`. This server can be used to send and receive messages.
-Future<UdpServer> startUdpServer({required int port}) =>
-    RustLib.instance.api.crateApiBridgeStartUdpServer(port: port);
-
-/// Sends a message to all clients currently connected to the UDP server.
-///
-/// # Arguments
-/// * `server` - The `UdpServer` instance used to send the message.
-/// * `msg` - A `String` containing the message to be sent.
-///
-/// # Returns
-/// Returns `Ok(())` if the message was sent successfully.
-Future<void> udpSendMessage({required UdpServer server, required String msg}) =>
-    RustLib.instance.api.crateApiBridgeUdpSendMessage(server: server, msg: msg);
-
-/// Streams incoming UDP packets to the Flutter side.
-///
-/// This function runs a background task that listens for UDP messages and
-/// sends each one to the provided `StreamSink`.
-///
-/// # Arguments
-/// * `server` - The `UdpServer` instance to listen on.
-/// * `sink` - The stream sink that forwards packets to Flutter.
-///
-/// # Returns
-/// Returns `Ok(())` if the stream is set up successfully.
-Stream<UdpPacket> udpReceiveStream({required UdpServer server}) =>
-    RustLib.instance.api.crateApiBridgeUdpReceiveStream(server: server);
-
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner< MdnsServer>>
 abstract class MdnsServer implements RustOpaqueInterface {}
 
@@ -189,12 +154,22 @@ abstract class UdpClient implements RustOpaqueInterface {}
 abstract class UdpPacket implements RustOpaqueInterface {
   SocketAddr get addr;
 
-  Uint8List get data;
+  String get data;
 
   set addr(SocketAddr addr);
 
-  set data(Uint8List data);
+  set data(String data);
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpServer>>
-abstract class UdpServer implements RustOpaqueInterface {}
+abstract class UdpServer implements RustOpaqueInterface {
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<UdpServer> newInstance({required int port}) =>
+      RustLib.instance.api.crateApiBridgeUdpServerNew(port: port);
+
+  Stream<UdpPacket> receiveStream();
+
+  Future<void> run();
+
+  Future<void> sendMessage({required String msg});
+}

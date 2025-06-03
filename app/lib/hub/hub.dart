@@ -9,7 +9,10 @@ class Hub extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Hub')),
-      body: Column(spacing: 8, children: [UdpView(), MdnsView()]),
+      body: Padding(
+        padding: EdgeInsetsGeometry.all(8),
+        child: Column(spacing: 8, children: [UdpView(), MdnsView()]),
+      ),
     );
   }
 }

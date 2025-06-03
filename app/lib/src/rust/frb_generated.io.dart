@@ -103,6 +103,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  UdpServer
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpServer(
+    dynamic raw,
+  );
+
+  @protected
   int dco_decode_CastedPrimitive_u_64(dynamic raw);
 
   @protected
@@ -234,6 +240,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   UdpPacket
   sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpPacket(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  UdpServer
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpServer(
     SseDeserializer deserializer,
   );
 
@@ -386,6 +398,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpPacket(
     UdpPacket self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpServer(
+    UdpServer self,
     SseSerializer serializer,
   );
 

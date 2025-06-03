@@ -40,7 +40,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.9.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 387937638;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 100782326;
 
 // Section: executor
 
@@ -215,7 +215,7 @@ fn wire__crate__api__bridge__UdpPacket_auto_accessor_set_data_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpPacket>,
             >>::sse_decode(&mut deserializer);
-            let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
+            let api_data = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             transform_result_sse::<_, ()>((move || {
                 let mut api_that_guard = None;
@@ -239,6 +239,219 @@ fn wire__crate__api__bridge__UdpPacket_auto_accessor_set_data_impl(
                 })?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__bridge__UdpServer_new_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "UdpServer_new",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_port = <u16>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let output_ok = crate::api::bridge::UdpServer::new(api_port).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__bridge__UdpServer_receive_stream_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "UdpServer_receive_stream",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpServer>,
+            >>::sse_decode(&mut deserializer);
+            let api_sink =
+                <StreamSink<UdpPacket, flutter_rust_bridge::for_generated::SseCodec>>::sse_decode(
+                    &mut deserializer,
+                );
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::bridge::UdpServer::receive_stream(
+                            &*api_that_guard,
+                            api_sink,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__bridge__UdpServer_run_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "UdpServer_run",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpServer>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::bridge::UdpServer::run(&*api_that_guard).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__bridge__UdpServer_send_message_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "UdpServer_send_message",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<UdpServer>,
+            >>::sse_decode(&mut deserializer);
+            let api_msg = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::bridge::UdpServer::send_message(&*api_that_guard, &api_msg)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -429,42 +642,6 @@ fn wire__crate__api__bridge__start_mdns_server_impl(
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
                     (move || async move {
                         let output_ok = crate::api::bridge::start_mdns_server(api_dur).await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
-fn wire__crate__api__bridge__start_udp_server_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "start_udp_server",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_port = <u16>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| async move {
-                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let output_ok = crate::api::bridge::start_udp_server(api_port).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -757,80 +934,6 @@ fn wire__crate__api__bridge__udp_client_send_text_impl(
         },
     )
 }
-fn wire__crate__api__bridge__udp_receive_stream_impl(
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "udp_receive_stream",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_server = <UdpServer>::sse_decode(&mut deserializer);
-            let api_sink =
-                <StreamSink<UdpPacket, flutter_rust_bridge::for_generated::SseCodec>>::sse_decode(
-                    &mut deserializer,
-                );
-            deserializer.end();
-            transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                (move || {
-                    let output_ok = crate::api::bridge::udp_receive_stream(api_server, api_sink)?;
-                    Ok(output_ok)
-                })(),
-            )
-        },
-    )
-}
-fn wire__crate__api__bridge__udp_send_message_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "udp_send_message",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_server = <UdpServer>::sse_decode(&mut deserializer);
-            let api_msg = <String>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| async move {
-                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let output_ok =
-                            crate::api::bridge::udp_send_message(api_server, api_msg).await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
 
 // Section: related_funcs
 
@@ -1055,24 +1158,33 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        9 => wire__crate__api__bridge__start_mdns_server_impl(port, ptr, rust_vec_len, data_len),
-        10 => wire__crate__api__bridge__start_udp_server_impl(port, ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__bridge__udp_client_connect_to_server_impl(
+        5 => wire__crate__api__bridge__UdpServer_new_impl(port, ptr, rust_vec_len, data_len),
+        6 => wire__crate__api__bridge__UdpServer_receive_stream_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        14 => wire__crate__api__bridge__udp_client_receive_text_impl(
+        7 => wire__crate__api__bridge__UdpServer_run_impl(port, ptr, rust_vec_len, data_len),
+        8 => {
+            wire__crate__api__bridge__UdpServer_send_message_impl(port, ptr, rust_vec_len, data_len)
+        }
+        13 => wire__crate__api__bridge__start_mdns_server_impl(port, ptr, rust_vec_len, data_len),
+        15 => wire__crate__api__bridge__udp_client_connect_to_server_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        15 => {
+        17 => wire__crate__api__bridge__udp_client_receive_text_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        18 => {
             wire__crate__api__bridge__udp_client_send_text_impl(port, ptr, rust_vec_len, data_len)
         }
-        17 => wire__crate__api__bridge__udp_send_message_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1105,17 +1217,16 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        5 => wire__crate__api__bridge__create_mdns_server_daimon_impl(ptr, rust_vec_len, data_len),
-        6 => wire__crate__api__bridge__create_udp_client_impl(ptr, rust_vec_len, data_len),
-        7 => wire__crate__api__bridge__mdns_daimon_running_impl(ptr, rust_vec_len, data_len),
-        8 => wire__crate__api__bridge__start_mdns_daimon_impl(ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__bridge__stop_mdns_daimon_impl(ptr, rust_vec_len, data_len),
-        13 => wire__crate__api__bridge__udp_client_is_connected_status_impl(
+        9 => wire__crate__api__bridge__create_mdns_server_daimon_impl(ptr, rust_vec_len, data_len),
+        10 => wire__crate__api__bridge__create_udp_client_impl(ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__bridge__mdns_daimon_running_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__api__bridge__start_mdns_daimon_impl(ptr, rust_vec_len, data_len),
+        14 => wire__crate__api__bridge__stop_mdns_daimon_impl(ptr, rust_vec_len, data_len),
+        16 => wire__crate__api__bridge__udp_client_is_connected_status_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        16 => wire__crate__api__bridge__udp_receive_stream_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1564,6 +1675,5 @@ mod web {
 }
 use pheonyx_engine::mdns_server::MdnsServer;
 use pheonyx_engine::udp_client::UdpClient;
-use pheonyx_engine::udp_server::UdpServer;
 #[cfg(target_family = "wasm")]
 pub use web::*;

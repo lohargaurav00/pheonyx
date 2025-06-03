@@ -19,7 +19,12 @@ class UdpServerCubit extends Cubit<UdpServerState> {
 
   Future<void> _init() async {
     try {
-      _server = await startUdpServer(port: udpServerPort);
+      _server = await UdpServer.newInstance(port: 6000);
+      if (_server == null) {
+        emit(state.copyWith(error: "Server Not Running"));
+        return;
+      }
+      _server!.run();
       emit(state.copyWith(loading: false));
       _startListening();
     } catch (e) {
@@ -34,7 +39,7 @@ class UdpServerCubit extends Cubit<UdpServerState> {
     }
 
     try {
-      await udpSendMessage(server: _server!, msg: msg);
+      await _server!.sendMessage(msg: msg);
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
@@ -46,7 +51,7 @@ class UdpServerCubit extends Cubit<UdpServerState> {
       return;
     }
 
-    _subscription = udpReceiveStream(server: _server!).listen(
+    _subscription = _server!.receiveStream().listen(
       (packet) {
         final updated = [packet, ...state.packets];
 

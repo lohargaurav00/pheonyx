@@ -15,6 +15,8 @@ tracing-subscriber = { workspace = true }
 tokio = { workspace = true }
 futures-util = { workspace = true }
 serde = { workspace = true }
+delegate-attr = { workspace = true }
+futures = { workspace=true }
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

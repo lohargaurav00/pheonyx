@@ -12,7 +12,7 @@ pub struct UdpServer {
     pub socket: Arc<UdpSocket>,
     pub connections: Arc<Mutex<Vec<SocketAddr>>>,
     pub tx: mpsc::Sender<(Vec<u8>, SocketAddr)>,
-    pub rx: mpsc::Receiver<(Vec<u8>, SocketAddr)>,
+    pub rx: Arc<Mutex<mpsc::Receiver<(Vec<u8>, SocketAddr)>>>,
 }
 
 #[allow(dead_code)]
@@ -38,7 +38,7 @@ impl UdpServer {
             socket: Arc::new(sock),
             connections: Arc::new(Mutex::new(Vec::new())),
             tx,
-            rx,
+            rx: Arc::new(Mutex::new(rx)),
         })
     }
 
@@ -120,7 +120,7 @@ mod tests {
     #[tokio::test]
     async fn test_udp_server_send_and_receive() -> Result<()> {
         let port = SERVER_PORT + 1;
-        let mut server = UdpServer::new(port).await?;
+        let server = UdpServer::new(port).await?;
         let server_addr = server.socket.local_addr()?;
 
         server.run()?;
@@ -136,7 +136,8 @@ mod tests {
         sleep(Duration::from_millis(100)).await;
 
         // Now receive from server's rx channel
-        if let Some((received_data, sender_addr)) = server.rx.recv().await {
+        let mut rx = server.rx.lock().await;
+        if let Some((received_data, sender_addr)) = rx.recv().await {
             assert_eq!(received_data, message, "Received message mismatch");
             assert_eq!(
                 sender_addr,

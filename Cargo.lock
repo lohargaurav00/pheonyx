@@ -725,7 +725,9 @@ name = "pheonyx_frb_client"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "delegate-attr",
  "flutter_rust_bridge",
+ "futures",
  "futures-util",
  "pheonyx_engine",
  "serde",

@@ -1,8 +1,10 @@
-use anyhow::{Ok, Result};
+use anyhow::Result;
 use flutter_rust_bridge::frb;
-use pheonyx_engine::{mdns_server, udp_client::UdpClient, udp_server::UdpServer};
+use pheonyx_engine::{mdns_server, udp_client::UdpClient, udp_server::UdpServer as PudpServer};
 use serde::Serialize;
 use std::net::SocketAddr;
+use tokio::sync::Mutex;
+use tracing::{debug, error, info};
 
 use crate::frb_generated::StreamSink;
 
@@ -151,67 +153,57 @@ pub fn mdns_daimon_running(server: &mdns_server::MdnsServer) -> bool {
     *server.running.lock().unwrap()
 }
 
-/// Starts a UDP server on the given port.
-///
-/// # Arguments
-/// * `port` - The port to bind the UDP socket to.
-///
-/// # Returns
-/// Returns a `UdpServer` instance wrapped in `Result`. This server can be used to send and receive messages.
-pub async fn start_udp_server(port: u16) -> Result<UdpServer> {
-    let server = UdpServer::new(port).await?;
-    server.run()?;
-    Ok(server)
-}
-
-/// Sends a message to all clients currently connected to the UDP server.
-///
-/// # Arguments
-/// * `server` - The `UdpServer` instance used to send the message.
-/// * `msg` - A `String` containing the message to be sent.
-///
-/// # Returns
-/// Returns `Ok(())` if the message was sent successfully.
-pub async fn udp_send_message(server: UdpServer, msg: String) -> Result<()> {
-    server.send_message(&msg).await
-}
-
 /// Represents a received UDP message packet.
 ///
 /// This struct will be serialized and sent to Flutter through a stream.
 #[derive(Serialize)]
 pub struct UdpPacket {
     /// Raw data received from the sender.
-    pub data: Vec<u8>,
+    pub data: String,
     /// The address of the sender.
     pub addr: SocketAddr,
 }
 
-/// Streams incoming UDP packets to the Flutter side.
-///
-/// This function runs a background task that listens for UDP messages and
-/// sends each one to the provided `StreamSink`.
-///
-/// # Arguments
-/// * `server` - The `UdpServer` instance to listen on.
-/// * `sink` - The stream sink that forwards packets to Flutter.
-///
-/// # Returns
-/// Returns `Ok(())` if the stream is set up successfully.
 #[frb]
-pub fn udp_receive_stream(server: UdpServer, sink: StreamSink<UdpPacket>) -> Result<()> {
-    std::thread::spawn(move || {
-        let rt = tokio::runtime::Runtime::new().unwrap();
-        rt.block_on(async {
-            let mut rx = server.rx;
+pub struct UdpServer(Mutex<PudpServer>);
+
+impl UdpServer {
+    pub async fn new(port: u16) -> Result<Self> {
+        let server = PudpServer::new(port).await?;
+        Ok(Self(Mutex::new(server)))
+    }
+
+    pub async fn send_message(&self, msg: &str) -> Result<()> {
+        let server = self.0.lock().await;
+        server.send_message(msg).await
+    }
+
+    pub async fn run(&self) -> Result<()> {
+        let server = self.0.lock().await;
+        server.run()
+    }
+
+    pub async fn receive_stream(&self, sink: StreamSink<UdpPacket>) -> Result<()> {
+        let udp_server = self.0.lock().await;
+        let a_rx = udp_server.rx.clone();
+
+        flutter_rust_bridge::spawn(async move {
+            let mut rx = a_rx.lock().await;
             while let Some((data, addr)) = rx.recv().await {
-                let packet = UdpPacket { data, addr };
-                if sink.add(packet).is_err() {
-                    break;
+                debug!("Received Packet from socket {:?} ,{}", data, addr);
+                let msg = String::from_utf8_lossy(&data).to_string();
+                let packet = UdpPacket { data: msg, addr };
+
+                match sink.add(packet) {
+                    Ok(_) => info!("Packet added to sink"),
+                    Err(err) => {
+                        error!("Error while sink add packet: {}", err);
+                        break;
+                    }
                 }
             }
         });
-    });
 
-    Ok(())
+        Ok(())
+    }
 }
