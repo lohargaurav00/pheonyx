@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
+import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Main entrypoint of the Rust API
@@ -62,7 +63,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.9.0';
 
   @override
-  int get rustContentHash => 100782326;
+  int get rustContentHash => 1592139105;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -73,6 +74,23 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<void> crateApiBridgeUdpClientConnect({
+    required UdpClient that,
+    required int port,
+    required String ip,
+  });
+
+  UdpClient crateApiBridgeUdpClientNew();
+
+  Stream<UdpPacket> crateApiBridgeUdpClientReceiveStream({
+    required UdpClient that,
+  });
+
+  Future<void> crateApiBridgeUdpClientSendMessage({
+    required UdpClient that,
+    required String message,
+  });
+
   SocketAddr crateApiBridgeUdpPacketAutoAccessorGetAddr({
     required UdpPacket that,
   });
@@ -104,8 +122,6 @@ abstract class RustLibApi extends BaseApi {
 
   MdnsServer crateApiBridgeCreateMdnsServerDaimon();
 
-  UdpClient crateApiBridgeCreateUdpClient();
-
   bool crateApiBridgeMdnsDaimonRunning({required MdnsServer server});
 
   void crateApiBridgeStartMdnsDaimon({required MdnsServer server});
@@ -113,23 +129,6 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiBridgeStartMdnsServer({int? dur});
 
   void crateApiBridgeStopMdnsDaimon({required MdnsServer server});
-
-  Future<void> crateApiBridgeUdpClientConnectToServer({
-    required UdpClient client,
-    required String ip,
-    required int port,
-  });
-
-  bool crateApiBridgeUdpClientIsConnectedStatus({required UdpClient client});
-
-  Future<String> crateApiBridgeUdpClientReceiveText({
-    required UdpClient client,
-  });
-
-  Future<void> crateApiBridgeUdpClientSendText({
-    required UdpClient client,
-    required String message,
-  });
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_MdnsServer;
@@ -181,6 +180,151 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  Future<void> crateApiBridgeUdpClientConnect({
+    required UdpClient that,
+    required int port,
+    required String ip,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
+            that,
+            serializer,
+          );
+          sse_encode_u_16(port, serializer);
+          sse_encode_String(ip, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 1,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiBridgeUdpClientConnectConstMeta,
+        argValues: [that, port, ip],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBridgeUdpClientConnectConstMeta =>
+      const TaskConstMeta(
+        debugName: "UdpClient_connect",
+        argNames: ["that", "port", "ip"],
+      );
+
+  @override
+  UdpClient crateApiBridgeUdpClientNew() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiBridgeUdpClientNewConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBridgeUdpClientNewConstMeta =>
+      const TaskConstMeta(debugName: "UdpClient_new", argNames: []);
+
+  @override
+  Stream<UdpPacket> crateApiBridgeUdpClientReceiveStream({
+    required UdpClient that,
+  }) {
+    final sink = RustStreamSink<UdpPacket>();
+    unawaited(
+      handler.executeNormal(
+        NormalTask(
+          callFfi: (port_) {
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
+              that,
+              serializer,
+            );
+            sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpPacket_Sse(
+              sink,
+              serializer,
+            );
+            pdeCallFfi(
+              generalizedFrbRustBinding,
+              serializer,
+              funcId: 3,
+              port: port_,
+            );
+          },
+          codec: SseCodec(
+            decodeSuccessData: sse_decode_unit,
+            decodeErrorData: null,
+          ),
+          constMeta: kCrateApiBridgeUdpClientReceiveStreamConstMeta,
+          argValues: [that, sink],
+          apiImpl: this,
+        ),
+      ),
+    );
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiBridgeUdpClientReceiveStreamConstMeta =>
+      const TaskConstMeta(
+        debugName: "UdpClient_receive_stream",
+        argNames: ["that", "sink"],
+      );
+
+  @override
+  Future<void> crateApiBridgeUdpClientSendMessage({
+    required UdpClient that,
+    required String message,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
+            that,
+            serializer,
+          );
+          sse_encode_String(message, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 4,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiBridgeUdpClientSendMessageConstMeta,
+        argValues: [that, message],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBridgeUdpClientSendMessageConstMeta =>
+      const TaskConstMeta(
+        debugName: "UdpClient_send_message",
+        argNames: ["that", "message"],
+      );
+
+  @override
   SocketAddr crateApiBridgeUdpPacketAutoAccessorGetAddr({
     required UdpPacket that,
   }) {
@@ -192,7 +336,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -222,7 +366,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -258,7 +402,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             addr,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -291,7 +435,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             serializer,
           );
           sse_encode_String(data, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -320,7 +464,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 5,
+            funcId: 9,
             port: port_,
           );
         },
@@ -360,7 +504,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 6,
+              funcId: 10,
               port: port_,
             );
           },
@@ -396,7 +540,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 7,
+            funcId: 11,
             port: port_,
           );
         },
@@ -431,7 +575,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 8,
+            funcId: 12,
             port: port_,
           );
         },
@@ -458,7 +602,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -476,29 +620,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "create_mdns_server_daimon", argNames: []);
 
   @override
-  UdpClient crateApiBridgeCreateUdpClient() {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiBridgeCreateUdpClientConstMeta,
-        argValues: [],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiBridgeCreateUdpClientConstMeta =>
-      const TaskConstMeta(debugName: "create_udp_client", argNames: []);
-
-  @override
   bool crateApiBridgeMdnsDaimonRunning({required MdnsServer server}) {
     return handler.executeSync(
       SyncTask(
@@ -508,7 +629,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -537,7 +658,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -563,7 +684,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 13,
+            funcId: 16,
             port: port_,
           );
         },
@@ -591,7 +712,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             server,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -606,149 +727,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kCrateApiBridgeStopMdnsDaimonConstMeta =>
       const TaskConstMeta(debugName: "stop_mdns_daimon", argNames: ["server"]);
-
-  @override
-  Future<void> crateApiBridgeUdpClientConnectToServer({
-    required UdpClient client,
-    required String ip,
-    required int port,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            client,
-            serializer,
-          );
-          sse_encode_String(ip, serializer);
-          sse_encode_u_16(port, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 15,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiBridgeUdpClientConnectToServerConstMeta,
-        argValues: [client, ip, port],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiBridgeUdpClientConnectToServerConstMeta =>
-      const TaskConstMeta(
-        debugName: "udp_client_connect_to_server",
-        argNames: ["client", "ip", "port"],
-      );
-
-  @override
-  bool crateApiBridgeUdpClientIsConnectedStatus({required UdpClient client}) {
-    return handler.executeSync(
-      SyncTask(
-        callFfi: () {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            client,
-            serializer,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_bool,
-          decodeErrorData: null,
-        ),
-        constMeta: kCrateApiBridgeUdpClientIsConnectedStatusConstMeta,
-        argValues: [client],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiBridgeUdpClientIsConnectedStatusConstMeta =>
-      const TaskConstMeta(
-        debugName: "udp_client_is_connected_status",
-        argNames: ["client"],
-      );
-
-  @override
-  Future<String> crateApiBridgeUdpClientReceiveText({
-    required UdpClient client,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            client,
-            serializer,
-          );
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 17,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiBridgeUdpClientReceiveTextConstMeta,
-        argValues: [client],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiBridgeUdpClientReceiveTextConstMeta =>
-      const TaskConstMeta(
-        debugName: "udp_client_receive_text",
-        argNames: ["client"],
-      );
-
-  @override
-  Future<void> crateApiBridgeUdpClientSendText({
-    required UdpClient client,
-    required String message,
-  }) {
-    return handler.executeNormal(
-      NormalTask(
-        callFfi: (port_) {
-          final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerUdpClient(
-            client,
-            serializer,
-          );
-          sse_encode_String(message, serializer);
-          pdeCallFfi(
-            generalizedFrbRustBinding,
-            serializer,
-            funcId: 18,
-            port: port_,
-          );
-        },
-        codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
-          decodeErrorData: sse_decode_AnyhowException,
-        ),
-        constMeta: kCrateApiBridgeUdpClientSendTextConstMeta,
-        argValues: [client, message],
-        apiImpl: this,
-      ),
-    );
-  }
-
-  TaskConstMeta get kCrateApiBridgeUdpClientSendTextConstMeta =>
-      const TaskConstMeta(
-        debugName: "udp_client_send_text",
-        argNames: ["client", "message"],
-      );
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_MdnsServer =>
@@ -1697,6 +1675,17 @@ class UdpClientImpl extends RustOpaque implements UdpClient {
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_UdpClientPtr,
   );
+
+  Future<void> connect({required int port, required String ip}) => RustLib
+      .instance
+      .api
+      .crateApiBridgeUdpClientConnect(that: this, port: port, ip: ip);
+
+  Stream<UdpPacket> receiveStream() =>
+      RustLib.instance.api.crateApiBridgeUdpClientReceiveStream(that: this);
+
+  Future<void> sendMessage({required String message}) => RustLib.instance.api
+      .crateApiBridgeUdpClientSendMessage(that: this, message: message);
 }
 
 @sealed

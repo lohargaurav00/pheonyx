@@ -1,6 +1,8 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use flutter_rust_bridge::frb;
-use pheonyx_engine::{mdns_server, udp_client::UdpClient, udp_server::UdpServer as PudpServer};
+use pheonyx_engine::{
+    mdns_server, udp_client::UdpClient as _UdpClient, udp_server::UdpServer as PudpServer,
+};
 use serde::Serialize;
 use std::net::SocketAddr;
 use tokio::sync::Mutex;
@@ -21,79 +23,6 @@ use crate::frb_generated::StreamSink;
 #[frb]
 pub async fn start_mdns_server(dur: Option<u64>) -> Result<()> {
     mdns_server::register_mdns_server(dur).await
-}
-
-/// Creates a new instance of `UdpClient`.
-///
-/// # Returns
-///
-/// * `UdpClient` - A new UDP client with default unconnected state.
-#[frb]
-pub fn create_udp_client() -> UdpClient {
-    UdpClient::new()
-}
-
-/// Connects a `UdpClient` instance to a specified UDP server.
-///
-/// # Arguments
-///
-/// * `client` - Mutable reference to the `UdpClient`.
-/// * `ip` - The IP address of the server to connect to.
-/// * `port` - The port number of the server.
-///
-/// # Returns
-///
-/// * `Result<()>` - Returns `Ok(())` if the connection is successful, otherwise an error.
-#[frb]
-pub async fn udp_client_connect_to_server(
-    client: &mut UdpClient,
-    ip: String,
-    port: u16,
-) -> Result<()> {
-    client.connect(port, &ip).await
-}
-
-/// Sends a text message to the connected UDP server using the given client.
-///
-/// # Arguments
-///
-/// * `client` - Reference to the `UdpClient`.
-/// * `message` - The message string to be sent.
-///
-/// # Returns
-///
-/// * `Result<()>` - Returns `Ok(())` if the message is sent successfully, otherwise an error.
-#[frb]
-pub async fn udp_client_send_text(client: &UdpClient, message: String) -> Result<()> {
-    client.send_message(&message).await
-}
-
-/// Receives a text message from the connected UDP server using the given client.
-///
-/// # Arguments
-///
-/// * `client` - Reference to the `UdpClient`.
-///
-/// # Returns
-///
-/// * `Result<String>` - Returns the received message as a string if successful, otherwise an error.
-#[frb]
-pub async fn udp_client_receive_text(client: &UdpClient) -> Result<String> {
-    client.receive_message().await
-}
-
-/// Checks whether the given `UdpClient` is currently connected to a server.
-///
-/// # Arguments
-///
-/// * `client` - Reference to the `UdpClient`.
-///
-/// # Returns
-///
-/// * `bool` - `true` if the client is connected, `false` otherwise.
-#[frb]
-pub fn udp_client_is_connected_status(client: &UdpClient) -> bool {
-    client.connected
 }
 
 /// Creates a new instance of the `MdnsServer`.
@@ -156,7 +85,7 @@ pub fn mdns_daimon_running(server: &mdns_server::MdnsServer) -> bool {
 /// Represents a received UDP message packet.
 ///
 /// This struct will be serialized and sent to Flutter through a stream.
-#[derive(Serialize)]
+#[derive(Serialize, Debug, Clone)]
 pub struct UdpPacket {
     /// Raw data received from the sender.
     pub data: String,
@@ -205,5 +134,53 @@ impl UdpServer {
         });
 
         Ok(())
+    }
+}
+
+#[frb]
+pub struct UdpClient(Mutex<_UdpClient>);
+
+impl UdpClient {
+    pub fn new() -> Self {
+        UdpClient(Mutex::new(_UdpClient::new()))
+    }
+
+    pub async fn connect(&mut self, port: u16, ip: &str) -> Result<()> {
+        self.0.lock().await.connect(port, ip).await
+    }
+
+    pub async fn send_message(&self, message: &str) -> Result<()> {
+        self.0.lock().await.send_message(message).await
+    }
+
+    pub async fn receive_stream(&self, sink: StreamSink<UdpPacket>) -> Result<()> {
+        loop {
+            let socket_opt = &self.0.lock().await.socket;
+
+            let Some(socket) = socket_opt else {
+                error!("Socket is None. Exiting receive loop.");
+                return Err(anyhow!("Socket not initialized"));
+            };
+
+            let mut buf = [0u8; 1024];
+
+            match socket.recv_from(&mut buf).await {
+                Ok((len, addr)) => {
+                    let msg = String::from_utf8_lossy(&buf[..len]);
+                    let packet = UdpPacket {
+                        data: msg.to_string(),
+                        addr,
+                    };
+
+                    match sink.add(packet.clone()) {
+                        Ok(_) => info!("Packet added to sink: {:?}", packet),
+                        Err(e) => error!("Sink add error: {e}"),
+                    }
+                }
+                Err(err) => {
+                    error!("Failed to receive message: {err}");
+                }
+            }
+        }
     }
 }

@@ -66,19 +66,19 @@ class Connect extends StatelessWidget {
           highlightColor: colorTheme.onSecondary.withValues(alpha: 0.1),
           onTap: () async {
             print('Tapped on ${device.name}');
-            final client = createUdpClient();
-            await udpClientConnectToServer(
-              client: client,
-              ip: device.ip,
-              port: device.port,
-            );
-            await udpClientSendText(
-              client: client,
-              message: "hello from flutter",
-            );
+            final client = UdpClient();
+            await client.connect(ip: device.ip, port: device.port);
+            await client.sendMessage(message: "hello from flutter mobile");
 
-            final message = await udpClientReceiveText(client: client);
-            print('message: $message');
+            client.receiveStream().listen(
+              (packet) {
+                print('packet : ${packet.data}');
+              },
+              onError: (e) {
+                print('packet error : $e');
+              },
+              cancelOnError: false,
+            );
           },
           child: Container(
             padding: const EdgeInsets.all(12),
